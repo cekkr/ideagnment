@@ -6,6 +6,8 @@ Keep this in sync with `README.md` whenever the structure or scope changes.
 ## Project Summary
 SAP is a local-first alignment layer that ingests artifacts, builds capsules (goals/constraints/decisions/glossary/etc), and analyzes drafts for gaps, mismatches, and lens-specific clarity needs. It exposes a minimal FastAPI surface for ingestion, retrieval, and draft analysis, with optional local LLM rendering.
 
+Data possession is a first-class concern: skill claims/evidence default to private scope, and institution views must not reveal private evidence. Decentralized deployment is expected (each instance controls its own local data), with only explicitly shared artifacts/capsules exposed.
+
 ## Roadmap (from docs)
 - Milestone A: Local memory + retrieval (SQLite schema, FTS, embeddings, ingest pipeline).
 - Milestone B: Gap + mismatch analysis (glossary/exposure ledger, draft analyze fast-pass).
@@ -16,6 +18,8 @@ SAP is a local-first alignment layer that ingests artifacts, builds capsules (go
 
 ## Current Status
 - Scaffolding started for core models, SQLite migrations, ingest pipeline, retrieval, and draft analysis/render endpoints.
+- Added skills reporting/earning with privacy partitioning and institution-safe views.
+- Added dynamic model catalog/selector primitives for local compute and cost-aware routing.
 
 ## Source Tree (src)
 ```text
@@ -26,19 +30,24 @@ src/
     routes/
       health.py         # /v1/health
       workspace.py      # /v1/workspace/create, /v1/workspace/{id}
+      actor.py          # /v1/actor/create, /v1/actor/{id}
       ingest.py         # /v1/artifact/ingest
       capsule.py        # /v1/capsule/query
       draft.py          # /v1/draft/analyze, /v1/draft/render
+      skills.py         # /v1/skills/report, /v1/skills/earn, /v1/skills/query
   sap_core/
     domain/models.py    # Enums + Pydantic domain/request/response models
     retrieval/retrieve.py
     scoring/scoring.py
     prompts/templates.py
+    privacy/partitioning.py
     pipelines/
       ingest.py         # Artifact ingest + chunking
       draft_analyze.py  # Fast-pass gap/mismatch analysis
       draft_render.py   # Render pipeline (LLM optional)
+      skills.py         # Skill claim/evidence storage + privacy filtering
   sap_models/
+    catalog.py          # Local model catalog + budget-aware selection
     router.py           # LLM routing policy
     embedder.py         # Optional sentence-transformers embedder
     llm.py              # Optional llama.cpp wrapper
@@ -50,6 +59,7 @@ src/
         0001_init.sql
         0002_fts.sql
         0003_jobs.sql
+        0004_skills.sql
   sap_workers/
     worker.py           # Minimal job runner stub
 ```
@@ -58,3 +68,5 @@ src/
 - Capsules are the only publishable boundary objects; raw artifacts stay local.
 - Retrieval uses guardrail capsules (goals/constraints/decisions) plus FTS/embeddings.
 - Draft analysis is deterministic (no-LLM) in the fast pass; LLM rendering is optional and gated.
+- Skills use explicit scopes; institution views exclude private scope and redact evidence by default.
+- Model routing is budget-aware: pick local models by tier/latency/memory before using larger options.

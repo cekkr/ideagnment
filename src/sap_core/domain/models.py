@@ -82,11 +82,26 @@ class Workspace(BaseModel):
     enabled_lenses: List[Lens] = Field(default_factory=lambda: list(Lens))
 
 
+class Actor(BaseModel):
+    actor_id: str
+    workspace_id: str
+    display_name: str
+    org_id: Optional[str] = None
+    roles: List[str] = Field(default_factory=list)
+
+
 class WorkspaceCreateRequest(BaseModel):
     name: str
     description: str = ""
     owner_org_id: Optional[str] = None
     default_scope: Scope = Scope.workspace_local
+
+
+class ActorCreateRequest(BaseModel):
+    workspace_id: str
+    display_name: str
+    org_id: Optional[str] = None
+    roles: List[str] = Field(default_factory=list)
 
 
 class PolicyConfig(BaseModel):
@@ -135,6 +150,58 @@ class ExposureEvent(BaseModel):
     exposure_type: str = "seen"
     timestamp: datetime
     strength: float = Field(default=0.7, ge=0.0, le=1.0)
+
+
+class SkillClaimType(str, Enum):
+    reported = "reported"
+    earned = "earned"
+
+
+class SkillView(str, Enum):
+    person = "person"
+    institution = "institution"
+
+
+class SkillEvidence(BaseModel):
+    capsule_ids: List[str] = Field(default_factory=list)
+    artifact_ids: List[str] = Field(default_factory=list)
+    notes: Optional[str] = None
+
+
+class SkillRecord(BaseModel):
+    skill_id: str
+    workspace_id: str
+    actor_id: str
+    skill_name: str
+    claim_type: SkillClaimType
+    level: Optional[float] = None
+    confidence: float = Field(default=0.6, ge=0.0, le=1.0)
+    visibility: Scope = Scope.private
+    evidence: Optional[SkillEvidence] = None
+    created_at: datetime
+    updated_at: datetime
+
+
+class SkillReportRequest(BaseModel):
+    workspace_id: str
+    actor_id: str
+    skill_name: str
+    level: Optional[float] = None
+    confidence: float = Field(default=0.6, ge=0.0, le=1.0)
+    visibility: Scope = Scope.private
+    notes: Optional[str] = None
+
+
+class SkillEarnRequest(BaseModel):
+    workspace_id: str
+    actor_id: str
+    skill_name: str
+    level: Optional[float] = None
+    confidence: float = Field(default=0.75, ge=0.0, le=1.0)
+    visibility: Scope = Scope.private
+    evidence_capsule_ids: List[str] = Field(default_factory=list)
+    evidence_artifact_ids: List[str] = Field(default_factory=list)
+    notes: Optional[str] = None
 
 
 class GapFinding(BaseModel):

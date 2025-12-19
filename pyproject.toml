@@ -28,7 +28,10 @@ dev = [
 
 [tool.setuptools]
 package-dir = {"" = "src"}
-packages = ["sap_api", "sap_core", "sap_models", "sap_store", "sap_workers"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["sap_api*", "sap_core*", "sap_models*", "sap_store*", "sap_workers*"]
 
 [tool.setuptools.package-data]
 sap_store = ["sqlite/migrations/*.sql"]
