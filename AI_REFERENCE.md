@@ -1,0 +1,1 @@
+This file captures the essential implementation directives and project roadmap. Keep it in sync with README.md and update it every code or project concept change. Write and update the general project structure reference to make faster for AI the exploration and updating of the project.
