@@ -1,0 +1,802 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CircleMail - Mock Messaging Alignment Demo</title>
+    <style>
+      :root {
+        --bg: #f7f1e6;
+        --bg-2: #eaf2ee;
+        --card: #fff9f0;
+        --ink: #2b2318;
+        --muted: #6b5f4c;
+        --line: #d8c9b1;
+        --accent: #1f6f78;
+        --accent-2: #d26b4a;
+        --accent-3: #9c7a33;
+        --shadow: 0 12px 30px rgba(43, 35, 24, 0.12);
+        --radius-lg: 22px;
+        --radius-md: 14px;
+        --radius-sm: 10px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Space Grotesk", "Avenir Next", "Trebuchet MS", sans-serif;
+        color: var(--ink);
+        background: linear-gradient(140deg, var(--bg) 0%, var(--bg-2) 45%, #f0e2cf 100%);
+        min-height: 100vh;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: -10% 0 auto auto;
+        width: 420px;
+        height: 420px;
+        background: radial-gradient(circle at 30% 30%, rgba(31, 111, 120, 0.18), transparent 70%);
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      body::after {
+        content: "";
+        position: fixed;
+        inset: auto auto -15% -10%;
+        width: 520px;
+        height: 520px;
+        background: radial-gradient(circle at 70% 70%, rgba(210, 107, 74, 0.18), transparent 70%);
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .page {
+        position: relative;
+        z-index: 1;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid rgba(216, 201, 177, 0.6);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow);
+      }
+
+      .topbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        align-items: center;
+        padding: 18px 22px;
+        animation: riseIn 0.7s ease;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 220px;
+      }
+
+      .brand-mark {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        background: conic-gradient(from 120deg, var(--accent), var(--accent-2), var(--accent-3));
+        box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.8);
+      }
+
+      .brand h1 {
+        font-family: "Fraunces", "Palatino Linotype", serif;
+        font-size: 22px;
+        margin: 0;
+      }
+
+      .brand p {
+        margin: 4px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .meta-pills {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .pill {
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: rgba(31, 111, 120, 0.12);
+        color: var(--accent);
+        font-size: 12px;
+        border: 1px solid rgba(31, 111, 120, 0.2);
+      }
+
+      .top-actions {
+        margin-left: auto;
+        display: flex;
+        gap: 10px;
+      }
+
+      button {
+        font-family: inherit;
+        border-radius: 999px;
+        border: none;
+        padding: 8px 16px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 8px 14px rgba(43, 35, 24, 0.14);
+      }
+
+      .btn-ghost {
+        background: transparent;
+        border: 1px dashed rgba(107, 95, 76, 0.4);
+        color: var(--muted);
+      }
+
+      .btn-primary {
+        background: var(--accent);
+        color: #fff;
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 240px minmax(320px, 1fr) 280px;
+        gap: 20px;
+      }
+
+      .panel {
+        padding: 18px;
+        animation: riseIn 0.8s ease;
+      }
+
+      .panel h2 {
+        margin: 0 0 12px;
+        font-size: 16px;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+      }
+
+      .circle-item {
+        border-radius: var(--radius-md);
+        padding: 12px;
+        border: 1px solid transparent;
+        background: rgba(31, 111, 120, 0.06);
+        margin-bottom: 10px;
+      }
+
+      .circle-item.active {
+        border-color: rgba(31, 111, 120, 0.4);
+        background: rgba(31, 111, 120, 0.12);
+      }
+
+      .circle-name {
+        font-weight: 600;
+      }
+
+      .circle-meta {
+        color: var(--muted);
+        font-size: 12px;
+        margin-top: 4px;
+      }
+
+      .tag-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 8px;
+      }
+
+      .tag {
+        background: rgba(210, 107, 74, 0.12);
+        color: #8a3f28;
+        border-radius: 999px;
+        padding: 4px 8px;
+        font-size: 11px;
+      }
+
+      .ledger {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .timeline {
+        position: relative;
+        padding-left: 16px;
+      }
+
+      .timeline::before {
+        content: "";
+        position: absolute;
+        left: 6px;
+        top: 2px;
+        bottom: 2px;
+        width: 2px;
+        background: rgba(107, 95, 76, 0.3);
+      }
+
+      .timeline-item {
+        position: relative;
+        padding: 6px 10px 6px 12px;
+        border-radius: var(--radius-sm);
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px solid rgba(216, 201, 177, 0.6);
+      }
+
+      .timeline-item::before {
+        content: "";
+        position: absolute;
+        left: -12px;
+        top: 12px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--accent);
+      }
+
+      .timeline-item span {
+        display: block;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .thread {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .thread-header {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: flex-start;
+      }
+
+      .thread-title {
+        font-weight: 700;
+        font-size: 18px;
+      }
+
+      .thread-meta {
+        color: var(--muted);
+        font-size: 12px;
+        margin-top: 4px;
+      }
+
+      .messages {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .message {
+        background: #fff;
+        border-radius: var(--radius-md);
+        padding: 12px;
+        border: 1px solid rgba(216, 201, 177, 0.5);
+        animation: riseIn 0.9s ease;
+      }
+
+      .message-header {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+
+      .message strong {
+        color: var(--ink);
+      }
+
+      .context-chip {
+        background: rgba(31, 111, 120, 0.1);
+        color: var(--accent);
+        border-radius: 999px;
+        padding: 4px 8px;
+        font-size: 11px;
+        display: inline-block;
+        margin-right: 6px;
+        margin-top: 6px;
+      }
+
+      .compose {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .compose-top {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .mode-toggle {
+        display: flex;
+        gap: 8px;
+      }
+
+      .toggle-btn {
+        background: transparent;
+        border: 1px solid rgba(107, 95, 76, 0.4);
+        color: var(--muted);
+        padding: 6px 12px;
+      }
+
+      .toggle-btn.active {
+        background: var(--accent);
+        color: #fff;
+        border-color: transparent;
+      }
+
+      .mode-panel {
+        display: none;
+        gap: 12px;
+      }
+
+      .mode-panel.active {
+        display: grid;
+      }
+
+      .compose-panel {
+        grid-template-columns: 1fr 220px;
+        gap: 12px;
+      }
+
+      .compose-panel textarea {
+        width: 100%;
+        min-height: 180px;
+        border-radius: var(--radius-md);
+        border: 1px solid rgba(216, 201, 177, 0.8);
+        padding: 12px;
+        font-family: inherit;
+        font-size: 14px;
+        background: #fff;
+      }
+
+      .assist-card {
+        background: rgba(31, 111, 120, 0.08);
+        border-radius: var(--radius-md);
+        padding: 12px;
+        border: 1px solid rgba(31, 111, 120, 0.2);
+      }
+
+      .assist-card h3 {
+        margin: 0 0 8px;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .assist-card ul {
+        margin: 0;
+        padding-left: 16px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .suggestions {
+        display: grid;
+        gap: 10px;
+        grid-column: 1 / -1;
+      }
+
+      .suggestion {
+        border-radius: var(--radius-md);
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(216, 201, 177, 0.5);
+      }
+
+      .suggestion strong {
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      .read-panel {
+        grid-template-columns: 1.1fr 1fr;
+        gap: 12px;
+      }
+
+      .read-card {
+        background: #fff;
+        border-radius: var(--radius-md);
+        border: 1px solid rgba(216, 201, 177, 0.5);
+        padding: 12px;
+      }
+
+      .read-card h3 {
+        margin: 0 0 8px;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .meter {
+        background: rgba(216, 201, 177, 0.7);
+        border-radius: 999px;
+        overflow: hidden;
+        height: 8px;
+        margin-top: 6px;
+      }
+
+      .meter span {
+        display: block;
+        height: 100%;
+        width: var(--value, 50%);
+        background: var(--accent-2);
+      }
+
+      .lens-block {
+        padding: 12px;
+        border-radius: var(--radius-md);
+        border: 1px solid rgba(216, 201, 177, 0.5);
+        background: #fff;
+        margin-bottom: 12px;
+      }
+
+      .lens-block h3 {
+        margin: 0 0 8px;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .context-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        font-size: 12px;
+        margin-bottom: 8px;
+      }
+
+      .context-row span {
+        color: var(--muted);
+      }
+
+      .context-row strong {
+        text-align: right;
+      }
+
+      .api-stack {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .api-stack .pill {
+        background: rgba(156, 122, 51, 0.12);
+        color: #6f5520;
+        border-color: rgba(156, 122, 51, 0.25);
+      }
+
+      @keyframes riseIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 1100px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+
+        .compose-panel,
+        .read-panel {
+          grid-template-columns: 1fr;
+        }
+
+        .top-actions {
+          margin-left: 0;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation: none !important;
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header class="card topbar">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true"></div>
+          <div>
+            <h1>CircleMail</h1>
+            <p>Mock messaging system for circle-aware alignment workflows</p>
+          </div>
+        </div>
+        <div class="meta-pills">
+          <span class="pill">Workspace: Harbor Studio</span>
+          <span class="pill">Actor: Lina Patel</span>
+          <span class="pill">Circle: Product Core</span>
+        </div>
+        <div class="top-actions">
+          <button class="btn-ghost" type="button">New thread</button>
+          <button class="btn-primary" type="button">Compose</button>
+        </div>
+      </header>
+
+      <main class="layout">
+        <aside class="sidebar">
+          <section class="card panel">
+            <h2>Circles</h2>
+            <div class="circle-item active">
+              <div class="circle-name">Product Core</div>
+              <div class="circle-meta">Role: facilitator | 7 members</div>
+              <div class="tag-row">
+                <span class="tag">Vision: automation with empathy</span>
+                <span class="tag">Priority: onboarding</span>
+              </div>
+            </div>
+            <div class="circle-item">
+              <div class="circle-name">Research Loop</div>
+              <div class="circle-meta">Role: contributor | 4 members</div>
+              <div class="tag-row">
+                <span class="tag">Lens: field interviews</span>
+              </div>
+            </div>
+            <div class="circle-item">
+              <div class="circle-name">Ops Alliance</div>
+              <div class="circle-meta">Role: observer | 9 members</div>
+              <div class="tag-row">
+                <span class="tag">Constraint: legal review</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="card panel">
+            <h2>Skills and Vision Ledger</h2>
+            <div class="ledger timeline">
+              <div class="timeline-item">
+                Circle vision shift: prioritize guided automation
+                <span>2024-02 | Product Core</span>
+              </div>
+              <div class="timeline-item">
+                Skill earned: alignment facilitation (peer validated)
+                <span>2024-03 | Lina Patel</span>
+              </div>
+              <div class="timeline-item">
+                Constraint added: compliance review before pilot
+                <span>2024-04 | Ops Alliance</span>
+              </div>
+              <div class="timeline-item">
+                Skill delta: customer research depth +1
+                <span>2024-05 | Research Loop</span>
+              </div>
+            </div>
+          </section>
+        </aside>
+
+        <section class="center">
+          <section class="card panel thread">
+            <div class="thread-header">
+              <div>
+                <div class="thread-title">Thread: Onboarding automation Q3</div>
+                <div class="thread-meta">6 participants | last update 40 min ago</div>
+              </div>
+              <div class="tag-row">
+                <span class="tag">Goal: reduce onboarding to 3 days</span>
+                <span class="tag">Decision: pilot with 2 teams</span>
+              </div>
+            </div>
+            <div class="messages">
+              <article class="message">
+                <div class="message-header">
+                  <span><strong>Aya Lin</strong> - Product Core</span>
+                  <span>Today 09:14</span>
+                </div>
+                <div>
+                  We should frame the automation layer as a co-pilot, not a handoff. Teams
+                  in Ops are worried about losing the feedback loop.
+                </div>
+                <div>
+                  <span class="context-chip">Implicit: feedback loop is a quality gate</span>
+                  <span class="context-chip">Vision: empathy in automation</span>
+                </div>
+              </article>
+
+              <article class="message">
+                <div class="message-header">
+                  <span><strong>Lina Patel</strong> - Product Core</span>
+                  <span>Today 09:41</span>
+                </div>
+                <div>
+                  Agree. I can draft a version that clarifies we keep human review for
+                  the first 90 days and measure the trust gap.
+                </div>
+                <div>
+                  <span class="context-chip">Constraint: 90-day review window</span>
+                  <span class="context-chip">Metric: trust gap</span>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="card panel compose">
+            <div class="compose-top">
+              <div class="mode-toggle">
+                <button class="toggle-btn active" data-view="compose" type="button" aria-pressed="true">
+                  Compose
+                </button>
+                <button class="toggle-btn" data-view="read" type="button" aria-pressed="false">
+                  Read
+                </button>
+              </div>
+              <div class="api-stack">
+                <span class="pill">/v1/draft/analyze</span>
+                <span class="pill">/v1/draft/render</span>
+                <span class="pill">/v1/skills/query</span>
+              </div>
+            </div>
+
+            <div class="mode-panel compose-panel active" id="compose-panel">
+              <textarea aria-label="Compose message">Hi team, I drafted a co-pilot framing for the automation rollout. I also propose a 90-day human review window and tracking a trust-gap metric so Ops can see quality guardrails. Can we align on which stories should be highlighted to reflect the empathy principle?</textarea>
+              <div class="assist-card">
+                <h3>Real-time alignment cues</h3>
+                <ul>
+                  <li>Recipient lens: Ops Alliance expects explicit compliance steps.</li>
+                  <li>Shared glossary match: "co-pilot" is aligned with empathy lens.</li>
+                  <li>Potential gap: clarify who owns the trust-gap metric.</li>
+                </ul>
+              </div>
+              <div class="suggestions">
+                <div class="suggestion">
+                  <strong>Suggested bridge sentence</strong>
+                  "We will keep human review in place until compliance signs off on the
+                  first two cycles of automation data."
+                </div>
+                <div class="suggestion">
+                  <strong>Vision alignment note</strong>
+                  Anchor the decision to the circle vision: automation as support, not
+                  replacement, and the feedback loop as a shared learning ritual.
+                </div>
+              </div>
+            </div>
+
+            <div class="mode-panel read-panel" id="read-panel">
+              <div class="read-card">
+                <h3>Alignment reference for reader</h3>
+                <p>
+                  Aya is stressing that the co-pilot framing protects the feedback loop.
+                  In the Product Core circle, this references the empathy principle and
+                  signals a desire to keep the human check in place.
+                </p>
+                <div class="context-row">
+                  <span>Idea POV</span>
+                  <strong>Safeguard trust during automation</strong>
+                </div>
+                <div class="context-row">
+                  <span>Implicit reference</span>
+                  <strong>Quality gate from Ops Alliance</strong>
+                </div>
+              </div>
+              <div class="read-card">
+                <h3>Similarity to usual stance</h3>
+                <p>Message aligns with recent circle priorities but adds a new metric.</p>
+                <div class="meter" style="--value: 78%">
+                  <span></span>
+                </div>
+                <div class="context-row" style="margin-top: 10px;">
+                  <span>New element</span>
+                  <strong>Trust-gap metric definition</strong>
+                </div>
+                <div class="context-row">
+                  <span>Related discussion</span>
+                  <strong>Ops Alliance audit trail</strong>
+                </div>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <aside class="lens">
+          <section class="card panel">
+            <h2>Alignment Lens</h2>
+            <div class="lens-block">
+              <h3>Before send</h3>
+              <p>
+                Gaps flagged: ownership of trust-gap metric and compliance sign-off.
+                Suggested to add a bridge sentence for Ops Alliance.
+              </p>
+            </div>
+            <div class="lens-block">
+              <h3>After receive</h3>
+              <p>
+                Reader cues: message aligns with empathy vision, introduces a new metric.
+                Highlight assumptions about feedback loop stewardship.
+              </p>
+            </div>
+            <div class="lens-block timeline">
+              <h3>Vision delta timeline</h3>
+              <div class="timeline-item">
+                Empathy principle affirmed after customer interviews
+                <span>2023-11 | Product Core</span>
+              </div>
+              <div class="timeline-item">
+                Automation pilot approved with guardrails
+                <span>2024-01 | Product Core</span>
+              </div>
+              <div class="timeline-item">
+                Trust-gap metric added to shared dashboard
+                <span>2024-05 | Product Core</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="card panel">
+            <h2>Circle Context</h2>
+            <div class="context-row">
+              <span>Shared glossary</span>
+              <strong>co-pilot, trust gap, empathy loop</strong>
+            </div>
+            <div class="context-row">
+              <span>Open questions</span>
+              <strong>Who owns escalation?</strong>
+            </div>
+            <div class="context-row">
+              <span>Exposure ledger</span>
+              <strong>Ops Alliance has seen draft v2</strong>
+            </div>
+            <div class="context-row">
+              <span>Capsules used</span>
+              <strong>Goals, constraints, decisions</strong>
+            </div>
+          </section>
+        </aside>
+      </main>
+    </div>
+
+    <script>
+      const buttons = document.querySelectorAll("[data-view]");
+      const panels = {
+        compose: document.getElementById("compose-panel"),
+        read: document.getElementById("read-panel")
+      };
+
+      buttons.forEach((button) => {
+        button.addEventListener("click", () => {
+          buttons.forEach((item) => {
+            item.classList.remove("active");
+            item.setAttribute("aria-pressed", "false");
+          });
+
+          button.classList.add("active");
+          button.setAttribute("aria-pressed", "true");
+
+          Object.entries(panels).forEach(([key, panel]) => {
+            panel.classList.toggle("active", key === button.dataset.view);
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

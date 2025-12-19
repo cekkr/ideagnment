@@ -9,6 +9,7 @@ This repo is a Python service scaffold that follows the project roadmap in `docs
 - Getting started workflow: `docs/getting-started.md`
 - Milestone A checklist: `docs/milestone-a-checklist.md`
 - Project structure + status: `AI_REFERENCE.md`
+- Mock messaging demo: `docs/mock-messaging-demo.html`
 
 ## Why this exists
 Complex projects fail at the seams: unstated assumptions, silent contradictions, and outsider ideas that never land. SAP is not “rewrite-to-conform.” It is sensemaking + mismatch detection + bridge-building with provenance and opt‑in control.
@@ -27,6 +28,7 @@ The codebase is an early scaffold with a real API surface and storage:
 - Retrieval, scoring, and pipeline stubs for ingestion and draft analysis.
 - Optional local model routing + catalog in `config/models.json`.
 - Skills privacy partitioning with institution-safe views.
+- Mock messaging web demo for circle-based alignment workflows in `docs/mock-messaging-demo.html`.
 
 ## Roadmap (high level)
 From `docs/semanticAlignmentProtocol-roadmap.md`:
