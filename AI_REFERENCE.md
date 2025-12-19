@@ -8,6 +8,12 @@ SAP is a local-first alignment layer that ingests artifacts, builds capsules (go
 
 Data possession is a first-class concern: skill claims/evidence default to private scope, and institution views must not reveal private evidence. Decentralized deployment is expected (each instance controls its own local data), with only explicitly shared artifacts/capsules exposed.
 
+## Docs
+- `docs/semanticAlignmentProtocol-roadmap.md` (full roadmap and spec)
+- `docs/main-prompt-concept.md` (origin concept prompt)
+- `docs/getting-started.md` (end-to-end walkthrough)
+- `docs/milestone-a-checklist.md` (implementation tracker)
+
 ## Roadmap (from docs)
 - Milestone A: Local memory + retrieval (SQLite schema, FTS, embeddings, ingest pipeline).
 - Milestone B: Gap + mismatch analysis (glossary/exposure ledger, draft analyze fast-pass).
