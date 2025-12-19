@@ -21,6 +21,9 @@ Complex projects fail at the seams: unstated assumptions, silent contradictions,
 - Dissent preservation: rare thoughts are framed, not normalized.
 - Provenance is mandatory for any warning or suggestion.
 
+### Help, Don't Hinder
+SAP should help people get on the same page and align their visions with a comprehensive understanding of the whole, without creating dependency. If the service is lacking or unavailable, people should still be able to engage in discussion without difficulty. The system should reinforce "human learning" by teaching people to share points of view and support difficult discussions, while avoiding becoming a constraining tool.
+
 ## What’s here now
 The codebase is an early scaffold with a real API surface and storage:
 - FastAPI endpoints for ingestion, capsule query, draft analyze/render, and skills.
