@@ -1,0 +1,32 @@
+{
+  "models": [
+    {
+      "name": "qwen2.5-3b-instruct-q4",
+      "kind": "llm",
+      "tier": "small",
+      "local": true,
+      "max_ctx": 4096,
+      "latency_ms": 900,
+      "memory_gb": 4.0,
+      "cost_per_1k_tokens": 0.0,
+      "path": "/models/qwen2.5-3b-instruct-q4.gguf"
+    },
+    {
+      "name": "llama-3.1-8b-instruct-q4",
+      "kind": "llm",
+      "tier": "medium",
+      "local": true,
+      "max_ctx": 8192,
+      "latency_ms": 2000,
+      "memory_gb": 8.0,
+      "cost_per_1k_tokens": 0.0,
+      "path": "/models/llama-3.1-8b-instruct-q4.gguf"
+    }
+  ],
+  "budget": {
+    "max_latency_ms": 1200,
+    "max_memory_gb": 8.0,
+    "allow_remote": false,
+    "max_cost_per_1k_tokens": 0.0
+  }
+}

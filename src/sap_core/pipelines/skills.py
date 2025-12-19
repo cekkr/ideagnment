@@ -142,20 +142,29 @@ def query_skills(
     actor_id: Optional[str],
     claim_type: Optional[SkillClaimType],
     view: SkillView,
+    org_id: Optional[str] = None,
 ) -> List[SkillRecord]:
     _ensure_workspace(con, workspace_id)
 
-    sql = "SELECT * FROM skill WHERE workspace_id=?"
-    params: List[object] = [workspace_id]
+    sql = "SELECT s.* FROM skill s"
+    params: List[object] = []
+    if org_id:
+        sql += " JOIN actor a ON a.actor_id = s.actor_id"
+
+    sql += " WHERE s.workspace_id=?"
+    params.append(workspace_id)
 
     if actor_id:
-        sql += " AND actor_id=?"
+        sql += " AND s.actor_id=?"
         params.append(actor_id)
     if claim_type:
-        sql += " AND claim_type=?"
+        sql += " AND s.claim_type=?"
         params.append(claim_type.value)
+    if org_id:
+        sql += " AND a.org_id=?"
+        params.append(org_id)
 
-    sql += " ORDER BY updated_at DESC"
+    sql += " ORDER BY s.updated_at DESC"
     rows = con.execute(sql, params).fetchall()
 
     records: List[SkillRecord] = []

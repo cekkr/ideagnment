@@ -11,6 +11,10 @@ Privacy and data possession are central: sensitive skill claims/evidence default
 1. Install dependencies: `pip install -e .`
 2. Run the API: `uvicorn sap_api.app:app --host 127.0.0.1 --port 8787`
 
+## Runtime Config
+- Model catalog: edit `config/models.json` (hot reload on file change). Override path with `SAP_MODEL_CATALOG_PATH`.
+- Skills endpoints: pass `X-Actor-Id` header (and `X-Org-Id` for institution views).
+
 ## Repo Structure (high level)
 - `src/sap_api/`: FastAPI app + routes
 - `src/sap_core/`: domain models, retrieval, scoring, pipelines

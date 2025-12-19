@@ -20,9 +20,13 @@ Data possession is a first-class concern: skill claims/evidence default to priva
 - Scaffolding started for core models, SQLite migrations, ingest pipeline, retrieval, and draft analysis/render endpoints.
 - Added skills reporting/earning with privacy partitioning and institution-safe views.
 - Added dynamic model catalog/selector primitives for local compute and cost-aware routing.
+- Skills endpoints enforce identity via `X-Actor-Id` (and `X-Org-Id` for institution views).
+- Model catalog is loaded from `config/models.json` (override with `SAP_MODEL_CATALOG_PATH`) and can be edited at runtime.
 
 ## Source Tree (src)
 ```text
+config/
+  models.json          # Runtime model catalog + budget (hot reloaded)
 src/
   sap_api/
     app.py              # FastAPI app entrypoint + router registration
@@ -48,6 +52,8 @@ src/
       skills.py         # Skill claim/evidence storage + privacy filtering
   sap_models/
     catalog.py          # Local model catalog + budget-aware selection
+    config.py           # Runtime model config loader (hot reload via mtime)
+    registry.py         # LLM instance cache
     router.py           # LLM routing policy
     embedder.py         # Optional sentence-transformers embedder
     llm.py              # Optional llama.cpp wrapper

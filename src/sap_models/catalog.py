@@ -14,12 +14,13 @@ class ModelSpec:
     latency_ms: int
     memory_gb: float
     cost_per_1k_tokens: float = 0.0
+    path: Optional[str] = None
 
 
 @dataclass
 class ModelBudget:
-    max_latency_ms: int
-    max_memory_gb: float
+    max_latency_ms: int = 1200
+    max_memory_gb: float = 8.0
     allow_remote: bool = False
     max_cost_per_1k_tokens: float = 0.0
 
