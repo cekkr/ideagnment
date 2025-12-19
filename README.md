@@ -12,7 +12,7 @@ This repo is a Python service scaffold that follows the project roadmap in `docs
 - Mock messaging demo: `examples/mock_messaging/index.html` (served by `examples/mock_messaging/server.py`)
 
 ## Why this exists
-Complex projects fail at the seams: unstated assumptions, silent contradictions, and outsider ideas that never land. SAP is not “rewrite-to-conform.” It is sensemaking + mismatch detection + bridge-building with provenance and opt‑in control.
+Complex projects fail at the seams: unstated assumptions, silent contradictions, and outsider ideas that never land. SAP is not "rewrite-to-conform." It is sensemaking + mismatch detection + bridge-building with provenance and opt-in control. It should help people align their visions without creating dependency; if the service is lacking, people should still be able to discuss and share perspectives. The goal is "human learning" support for difficult conversations, not a constraining tool.
 
 ## Core principles
 - Local-first by default: drafts and raw artifacts stay on-device.

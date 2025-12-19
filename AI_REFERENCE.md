@@ -8,6 +8,9 @@ SAP is a local-first alignment layer that ingests artifacts, builds capsules (go
 
 Data possession is a first-class concern: skill claims/evidence default to private scope, and institution views must not reveal private evidence. Decentralized deployment is expected (each instance controls its own local data), with only explicitly shared artifacts/capsules exposed.
 
+## Primary Guideline: Help, Don't Hinder
+SAP should help people get on the same page and align their visions with a comprehensive understanding of the whole, without creating dependency. If the service is lacking or unavailable, people should still be able to engage in discussion without difficulty. The system should reinforce "human learning" by teaching people to share points of view and support difficult discussions, while avoiding becoming a constraining tool.
+
 ## Docs
 - `docs/semanticAlignmentProtocol-roadmap.md` (full roadmap and spec)
 - `docs/main-prompt-concept.md` (origin concept prompt)
