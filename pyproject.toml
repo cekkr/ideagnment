@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sap"
+version = "0.2.0"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.110",
+  "uvicorn>=0.27",
+  "pydantic>=2.6",
+  "python-ulid>=2.7.0",
+  "numpy>=1.26",
+  "scikit-learn>=1.4",
+  "regex>=2024.0.0",
+]
+
+[project.optional-dependencies]
+models = [
+  "sentence-transformers>=3.0.0",
+  "llama-cpp-python>=0.2.90",
+]
+dev = [
+  "pytest>=8.0",
+  "ruff>=0.5.0",
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+packages = ["sap_api", "sap_core", "sap_models", "sap_store", "sap_workers"]
+
+[tool.setuptools.package-data]
+sap_store = ["sqlite/migrations/*.sql"]
+
+[tool.ruff]
+line-length = 100
