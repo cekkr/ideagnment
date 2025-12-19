@@ -13,7 +13,10 @@ Data possession is a first-class concern: skill claims/evidence default to priva
 - `docs/main-prompt-concept.md` (origin concept prompt)
 - `docs/getting-started.md` (end-to-end walkthrough)
 - `docs/milestone-a-checklist.md` (implementation tracker)
-- `docs/mock-messaging-demo.html` (mock messaging web UI reference)
+
+## Examples
+- `examples/mock_messaging/index.html` (mock messaging web UI reference)
+- `examples/mock_messaging/server.py` (demo server + seeded data for API-backed results)
 
 ## Roadmap (from docs)
 - Milestone A: Local memory + retrieval (SQLite schema, FTS, embeddings, ingest pipeline).
@@ -29,10 +32,12 @@ Data possession is a first-class concern: skill claims/evidence default to priva
 - Added dynamic model catalog/selector primitives for local compute and cost-aware routing.
 - Skills endpoints enforce identity via `X-Actor-Id` (and `X-Org-Id` for institution views).
 - Model catalog is loaded from `config/models.json` (override with `SAP_MODEL_CATALOG_PATH`) and can be edited at runtime.
-- Added a mock messaging web demo for circle-based alignment flows at `docs/mock-messaging-demo.html`.
+- Added a mock messaging web demo for circle-based alignment flows at `examples/mock_messaging/index.html`.
+- Added a demo server for the mock messaging UI at `examples/mock_messaging/server.py`.
 
 ## Demo Reference: Mock Messaging Web System
-- Location: `docs/mock-messaging-demo.html`.
+- Location: `examples/mock_messaging/index.html`.
+- Server: `examples/mock_messaging/server.py` (serves the UI and seeds demo data).
 - Purpose: demonstrate circle membership, skills/vision changes over time, and alignment workflows in a messaging UI.
 - Compose flow: drafts call `/v1/draft/analyze` and `/v1/draft/render` to surface gaps, glossary matches, and bridge suggestions.
 - Read flow: received messages show alignment references (idea POV, implicit references, related discussions, similarity to usual stance).
